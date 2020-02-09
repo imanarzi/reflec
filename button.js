@@ -1,6 +1,6 @@
 function myFunction(name){
     var tmstmp = Date.now();
-    firebase.database().ref().set({
+    firebase.database().ref("/reactions").set({
         reaction: name,
         timestamp: tmstmp
       });
