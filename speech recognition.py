@@ -61,8 +61,3 @@ if __name__ == "__main__":
         response = requests.put(url, data=json.dumps(resp), headers=headers)
         res = response.json()
         print (res)
-    #print('\nSuccess : {}\nError   : {}\n\nText from Speech\n{}\n\n{}' \
-           #.format(resp['success'],
-##                   resp['error'],
-##                   '-'*17,
-##                   resp['transcription']))
