@@ -1,4 +1,6 @@
 import speech_recognition as sr
+import requests
+import json
 
 def recognize_speech_from_mic(recognizer, microphone):
     """Transcribe speech from recorded from `microphone`.
@@ -49,9 +51,13 @@ def recognize_speech_from_mic(recognizer, microphone):
 if __name__ == "__main__":
     recognizer = sr.Recognizer()
     mic = sr.Microphone(device_index=1)
-    response = recognize_speech_from_mic(recognizer, mic)
-    print('\nSuccess : {}\nError   : {}\n\nText from Speech\n{}\n\n{}' \
-          .format(response['success'],
-                  response['error'],
-                  '-'*17,
-                  response['transcription']))
+    resp = recognize_speech_from_mic(recognizer, mic)
+    url = 'https://reflec-46d2b.firebaseio.com/'
+    headers = {"Content-Type": "application/json"}
+    response = requests.put(url, data=resp, headers=headers)
+    #res = response.json()
+    # print('\nSuccess : {}\nError   : {}\n\nText from Speech\n{}\n\n{}' \
+    #       .format(response['success'],
+    #               response['error'],
+    #               '-'*17,
+    #               response['transcription']))
