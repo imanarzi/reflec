@@ -1,6 +1,7 @@
 import speech_recognition as sr
 import requests
 import json
+import time
 
 def recognize_speech_from_mic(recognizer, microphone):
     """Transcribe speech from recorded from `microphone`.
@@ -31,6 +32,7 @@ def recognize_speech_from_mic(recognizer, microphone):
         "success": True,
         "error": None,
         "transcription": None
+
     }
 
     # try recognizing the speech in the recording
@@ -49,15 +51,18 @@ def recognize_speech_from_mic(recognizer, microphone):
     return response
 
 if __name__ == "__main__":
-    recognizer = sr.Recognizer()
-    mic = sr.Microphone(device_index=1)
-    resp = recognize_speech_from_mic(recognizer, mic)
-    url = 'https://reflec-46d2b.firebaseio.com/'
-    headers = {"Content-Type": "application/json"}
-    response = requests.put(url, data=resp, headers=headers)
-    #res = response.json()
-    # print('\nSuccess : {}\nError   : {}\n\nText from Speech\n{}\n\n{}' \
-    #       .format(response['success'],
-    #               response['error'],
-    #               '-'*17,
-    #               response['transcription']))
+    while True:
+        recognizer = sr.Recognizer()
+        mic = sr.Microphone(device_index=1)
+        resp = recognize_speech_from_mic(recognizer, mic)
+        ts = time.time()
+        url = 'https://reflec-46d2b.firebaseio.com/speech/' + str(int(ts*1000)) + '.json'
+        headers = {"Content-Type": "application/json"}
+        response = requests.put(url, data=json.dumps(resp), headers=headers)
+        res = response.json()
+        print (res)
+    #print('\nSuccess : {}\nError   : {}\n\nText from Speech\n{}\n\n{}' \
+           #.format(resp['success'],
+##                   resp['error'],
+##                   '-'*17,
+##                   resp['transcription']))
